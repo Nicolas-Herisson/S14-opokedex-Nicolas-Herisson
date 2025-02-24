@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script defer src="./assets/js/app.js" type="module"></script>
+</head>
+<body>
+    <div id="pokemon-list"></div>
+    <template id="pokemon-template">
+        <div class="pokemon-container is-invisible">
+            <div>
+                <h1 id="pokemon-name">name</h1>
+                <img id="pokemon-image" :src="image" alt="">
+            </div>
+            <p id="pokemon-description">description</p>
+            <div id="pokemon-number"></div>
+            <div id="pokemon-type"></div>
+            <div id="pokemon-evolution">evolution</div>
+            <div id="pokemon-size">size</div>
+            <div id="pokemon-weight"></div>     
+        </div>
+    </template>
+</body>
+</html>
