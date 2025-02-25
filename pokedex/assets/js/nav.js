@@ -1,4 +1,5 @@
-import { fetchAndInsertPokemons } from "./pokemon.js";
+import { displayPokemonList, fetchAndInsertPokemons, hidePokemonList, purgePokemonList, togglePokemonListDisplay } from "./pokemon.js";
+import { displayTypeList, fetchAndInsertTypes, hideTypeList, purgeTypeList, toggleTypeListDisplay } from "./type.js";
 
 export async function init()
 {
@@ -10,16 +11,25 @@ async function handlePokemonButton()
 {
     const pokemonButton = document.querySelector('.navbar-button-pokemon');
     pokemonButton.addEventListener('click', async (e) => {
-        console.log("pokemon");
+        purgePokemonList();
+
+        hideTypeList();
+        displayPokemonList();
         await fetchAndInsertPokemons();
     });
     console.log("handlePokemonButton");
 };
 
-function handleTypesButton()
+async function handleTypesButton()
 {
     const typesButton = document.querySelector('.navbar-button-types');
-    typesButton.addEventListener('click', (e) => {
+    typesButton.addEventListener('click', async (e) => {
+        //From types/:id/pokemons to /types avoid duplicates
+        purgeTypeList();
+
+        hidePokemonList();
+        displayTypeList();
+        await fetchAndInsertTypes();
         console.log("types");
     });
 }

@@ -1,4 +1,30 @@
 import { apiBaseUrl } from "./config.js";
+import { toggleTypeListDisplay } from "./type.js";
+
+export function togglePokemonListDisplay() {
+    const pokemonList = document.querySelector('#pokemon-list');
+
+    if (pokemonList)
+    pokemonList.classList.toggle('is-hidden');
+};
+
+export function purgePokemonList()
+{
+    const pokemonList = document.querySelector('#pokemon-list');
+    pokemonList.textContent = '';
+};
+
+export function hidePokemonList()
+{
+    const pokemonList = document.querySelector('#pokemon-list');
+    pokemonList.classList.add('is-hidden');
+};
+
+export function displayPokemonList()
+{
+    const pokemonList = document.querySelector('#pokemon-list');
+    pokemonList.classList.remove('is-hidden');
+};
 
 export async function fetchAndInsertPokemons(){
     try {
@@ -26,7 +52,7 @@ export function insertPokemonInHTML(pokemonData) {
 
     const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
   
-    clonedPokemonTemplate.querySelector('.is-invisible').classList.add('cell');
+    clonedPokemonTemplate.querySelector('.pokemon-container').classList.add('cell');
     clonedPokemonTemplate.querySelector('.pokemon-container').dataset.id = pokemonData.id;
     clonedPokemonTemplate.querySelector('.pokemon-number').textContent = "Numero : "+pokemonData.id;
     clonedPokemonTemplate.querySelector('.pokemon-name').textContent = pokemonData.name;
@@ -36,7 +62,6 @@ export function insertPokemonInHTML(pokemonData) {
     clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = "Poids : "+pokemonData.weight + "kg";
     clonedPokemonTemplate.querySelector('.pokemon-type').textContent = pokemonData.type;
     clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemonData.image;
-    clonedPokemonTemplate.querySelector('.is-invisible').classList.remove("is-invisible");
 
     
     clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {

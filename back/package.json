@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --watch app.js",
     "db:create": "node app/migrations/createTables.js",
-    "db:seed": "node app/migrations/pokemonSeed.js && node app/migrations/typeSeed.js",
+    "db:seed": "node app/migrations/pokemonSeed.js && node app/migrations/typeSeed.js && node app/migrations/pokemon_typeSeed.js",
     "db:reset": "npm run db:create && npm run db:seed"
   },
   "keywords": [],
