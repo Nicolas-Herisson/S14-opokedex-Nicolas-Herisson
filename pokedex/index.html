@@ -5,23 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <script defer src="./assets/js/app.js" type="module"></script>
 </head>
-<body>
-    <div id="pokemon-list"></div>
-    <template id="pokemon-template">
-        <button class="pokemon-container is-invisible ml-6 mb-6">
-            <div>
-                <h1 class="pokemon-name">name</h1>
-                <img class="pokemon-image" :src="image" alt="">
+<body >
+    <header>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+          
+            <div class="navbar-end">
+                <a class="navbar-item navbar-button-pokemon">
+                    Pokemons
+                  </a>
+            
+                  <a class="navbar-item navbar-button-types">
+                    Types
+                  </a>
             </div>
-            <p class="pokemon-description">description</p>
-            <div class="pokemon-number"></div>
-            <div class="pokemon-type"></div>
-            <div class="pokemon-evolution">evolution</div>
-            <div class="pokemon-size">size</div>
-            <div class="pokemon-weight"></div>     
-        </button>
-    </template>
+        </nav>
+    </header>
+
+    <main>
+
+
+        <div class="grid-fixed has-3-cols mx-6">
+            <!-- <div class="grid"> -->
+            <div id="pokemon-list" class="grid px-6">
+
+            </div>
+            <!-- </div> -->
+        </div>
+
+        <template id="pokemon-template">
+                
+            <button class="pokemon-container is-invisible mx-5 my-5">
+                <div>
+                    <h1 class="pokemon-name">name</h1>
+                    <img class="pokemon-image" :src="image" alt="" width="200" height="200">
+                </div>
+                <p class="pokemon-description">description</p>
+                <div class="pokemon-number"></div>
+                <div class="pokemon-type"></div>
+                <div class="pokemon-evolution">evolution</div>
+                <div class="pokemon-size">size</div>
+                <div class="pokemon-weight"></div>     
+            </button>
+
+        </template>
+    </main>
 </body>
 </html>

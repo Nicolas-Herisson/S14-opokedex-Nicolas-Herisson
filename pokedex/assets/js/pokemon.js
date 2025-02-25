@@ -21,18 +21,19 @@ export async function fetchAndInsertPokemons(){
 };
 
 export function insertPokemonInHTML(pokemonData) {
-    const taskHtmlElement = document.querySelector('#pokemon-list');
+    const pokemonListHtmlElement = document.querySelector('#pokemon-list');
     const pokemonTemplate = document.querySelector('#pokemon-template');
 
     const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
   
+    clonedPokemonTemplate.querySelector('.is-invisible').classList.add('cell');
     clonedPokemonTemplate.querySelector('.pokemon-container').dataset.id = pokemonData.id;
-    clonedPokemonTemplate.querySelector('.pokemon-number').textContent = pokemonData.id;
+    clonedPokemonTemplate.querySelector('.pokemon-number').textContent = "Numero : "+pokemonData.id;
     clonedPokemonTemplate.querySelector('.pokemon-name').textContent = pokemonData.name;
     clonedPokemonTemplate.querySelector('.pokemon-description').textContent = pokemonData.description;
-    clonedPokemonTemplate.querySelector('.pokemon-evolution').textContent = pokemonData.evolution;
-    clonedPokemonTemplate.querySelector('.pokemon-size').textContent = pokemonData.size + "m";
-    clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = pokemonData.weight + "kg";
+    clonedPokemonTemplate.querySelector('.pokemon-evolution').textContent = "Evolution : "+pokemonData.evolution;
+    clonedPokemonTemplate.querySelector('.pokemon-size').textContent = "Taille : "+pokemonData.size + "m";
+    clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = "Poids : "+pokemonData.weight + "kg";
     clonedPokemonTemplate.querySelector('.pokemon-type').textContent = pokemonData.type;
     clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemonData.image;
     clonedPokemonTemplate.querySelector('.is-invisible').classList.remove("is-invisible");
@@ -43,7 +44,7 @@ export function insertPokemonInHTML(pokemonData) {
         }
     );
 
-    taskHtmlElement.append(clonedPokemonTemplate);
+    pokemonListHtmlElement.append(clonedPokemonTemplate);
   };
 
   export async function handlePokemonLinkDisplay(event) {
