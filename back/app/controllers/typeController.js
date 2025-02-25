@@ -1,4 +1,3 @@
-import { Where } from 'sequelize/lib/utils';
 import {Type} from '../models/associations.js';
 
 export async function getAllTypes(req, res) {
