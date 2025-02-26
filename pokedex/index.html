@@ -33,10 +33,7 @@
 
         <div class="grid-fixed has-3-cols mx-6">
             <!-- <div class="grid"> -->
-            <div id="pokemon-list" class="grid px-6">
-            </div>
-
-            <div id="type-list" class="grid is-hidden"></div>
+            <div id="main-container" class="grid px-6"></div>
             <!-- </div> -->
         </div>
 
@@ -61,6 +58,18 @@
                 
             <button class="type-container mx-5 my-5">
                 <div class="type-name"></div>     
+            </button>
+
+        </template>
+
+        <template id="team-template">
+                
+            <button class="team-container mx-5 my-5">
+                <div>
+                    <h1 class="team-name">team name</h1>
+                </div>
+                <img class="pokemon-image" :src="image" alt="" width="200" height="200">
+                <p class="pokemon-name">pokemon name</p>  
             </button>
 
         </template>

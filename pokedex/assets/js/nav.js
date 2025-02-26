@@ -1,5 +1,4 @@
-import { displayPokemonList, fetchAndInsertPokemons, hidePokemonList, purgePokemonList, togglePokemonListDisplay } from "./pokemon.js";
-import { displayTypeList, fetchAndInsertTypes, hideTypeList, purgeTypeList, toggleTypeListDisplay } from "./type.js";
+import * as commons from "./commons.js"
 
 export async function init()
 {
@@ -11,25 +10,30 @@ async function handlePokemonButton()
 {
     const pokemonButton = document.querySelector('.navbar-button-pokemon');
     pokemonButton.addEventListener('click', async (e) => {
-        purgePokemonList();
 
-        hideTypeList();
-        displayPokemonList();
-        await fetchAndInsertPokemons();
+        commons.purgeMainContainer();
+        await commons.fetchAndInsert('pokemons');
     });
-    console.log("handlePokemonButton");
 };
 
 async function handleTypesButton()
 {
     const typesButton = document.querySelector('.navbar-button-types');
     typesButton.addEventListener('click', async (e) => {
-        //From types/:id/pokemons to /types avoid duplicates
-        purgeTypeList();
-
-        hidePokemonList();
-        displayTypeList();
-        await fetchAndInsertTypes();
+        commons.purgeMainContainer();
+        await commons.fetchAndInsert('types');
         console.log("types");
     });
-}
+};
+
+async function handleTeamButton()
+{
+    const teamButton = document.querySelector('.navbar-button-types');
+    commons.purgeMainContainer();
+    
+    teamButton.addEventListener('click', async (e) => {
+
+        await commons.fetchAndInsert('teams');
+        console.log("types");
+    });
+};

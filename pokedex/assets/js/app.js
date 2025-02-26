@@ -1,4 +1,4 @@
-import * as pokemonManager from './pokemon.js';
+import * as commons from './commons.js';
 import * as nav from './nav.js';
 
 document.addEventListener('DOMContentLoaded', init());
@@ -7,7 +7,7 @@ async function init()
 {
     try {
         console.log("init");
-        await pokemonManager.fetchAndInsertPokemons();
+        await commons.fetchAndInsert('pokemons');
         nav.init();
     } catch (error) {
         alert(error);

@@ -1,53 +1,9 @@
 import { apiBaseUrl } from "./config.js";
-import { toggleTypeListDisplay } from "./type.js";
+import * as commons from "./commons.js"
 
-export function togglePokemonListDisplay() {
-    const pokemonList = document.querySelector('#pokemon-list');
-
-    if (pokemonList)
-    pokemonList.classList.toggle('is-hidden');
-};
-
-export function purgePokemonList()
-{
-    const pokemonList = document.querySelector('#pokemon-list');
-    pokemonList.textContent = '';
-};
-
-export function hidePokemonList()
-{
-    const pokemonList = document.querySelector('#pokemon-list');
-    pokemonList.classList.add('is-hidden');
-};
-
-export function displayPokemonList()
-{
-    const pokemonList = document.querySelector('#pokemon-list');
-    pokemonList.classList.remove('is-hidden');
-};
-
-export async function fetchAndInsertPokemons(){
-    try {
-        const response = await fetch(`${apiBaseUrl}/pokemons`);
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des pokemons');
-        };
-
-        const pokemons = await response.json();
-
-        for (const pokemon of pokemons)
-        {
-            insertPokemonInHTML(pokemon);
-        }
-
-    } catch (error) {
-        alert(error);
-    }
-};
 
 export function insertPokemonInHTML(pokemonData) {
-    const pokemonListHtmlElement = document.querySelector('#pokemon-list');
+    const minContainer = document.querySelector('#main-container');
     const pokemonTemplate = document.querySelector('#pokemon-template');
 
     const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
@@ -69,18 +25,17 @@ export function insertPokemonInHTML(pokemonData) {
         }
     );
 
-    pokemonListHtmlElement.append(clonedPokemonTemplate);
+    minContainer.append(clonedPokemonTemplate);
   };
 
   export async function handlePokemonLinkDisplay(event) {
     event.stopImmediatePropagation();
     event.preventDefault();
+    commons.purgeMainContainer();
 
     try {
         const id = event.currentTarget.closest('.pokemon-container').dataset.id;
 
-
-        const pokemonHtmlList = document.querySelector('#pokemon-list');
 
         const response = await fetch(`${apiBaseUrl}/pokemons/${id}`);
 
@@ -90,7 +45,6 @@ export function insertPokemonInHTML(pokemonData) {
 
         const pokemon = await response.json();
 
-        pokemonHtmlList.textContent = '';
 
         insertPokemonInHTML(pokemon);
 
