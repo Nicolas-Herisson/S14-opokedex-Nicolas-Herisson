@@ -42,7 +42,7 @@
             <button class="pokemon-container mx-5 my-5">
                 <div>
                     <h1 class="pokemon-name">name</h1>
-                    <img class="pokemon-image" :src="image" alt="" width="200" height="200">
+                    <img class="pokemon-image" :src="image" alt="">
                 </div>
                 <p class="pokemon-description">description</p>
                 <div class="pokemon-number"></div>
@@ -63,13 +63,13 @@
         </template>
 
         <template id="team-template">
-                
+            <div>Equipes :</div>
             <button class="team-container mx-5 my-5">
+                <div class="team-position is-hidden"></div>
                 <div>
-                    <h1 class="team-name">team name</h1>
+                    <h2 class="team-name">team name</h1>
                 </div>
-                <img class="pokemon-image" :src="image" alt="" width="200" height="200">
-                <p class="pokemon-name">pokemon name</p>  
+                <div class="team pokemon-container is-hidden"></div>
             </button>
 
         </template>

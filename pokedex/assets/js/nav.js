@@ -20,6 +20,7 @@ async function handleTypesButton()
 {
     const typesButton = document.querySelector('.navbar-button-types');
     typesButton.addEventListener('click', async (e) => {
+
         commons.purgeMainContainer();
         await commons.fetchAndInsert('types');
         console.log("types");
@@ -29,8 +30,9 @@ async function handleTypesButton()
 async function handleTeamButton()
 {
     const teamButton = document.querySelector('.navbar-button-types');
-    commons.purgeMainContainer();
     
+    commons.purgeMainContainer();
+
     teamButton.addEventListener('click', async (e) => {
 
         await commons.fetchAndInsert('teams');

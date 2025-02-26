@@ -1,6 +1,9 @@
 import { apiBaseUrl } from "./config.js";
 import { insertTypeInHTML } from './type.js';
 import { insertPokemonInHTML } from './pokemon.js';
+import { insertTeamsInHtml } from "./team.js";
+
+export const mainContainer = document.querySelector('#main-container');
 
 export async function fetchAndInsert(element)
 {
@@ -23,7 +26,7 @@ export async function fetchAndInsert(element)
                     insertPokemonInHTML(value);
                     break;
                 case 'teams':
-                    
+                    insertTeamsInHtml(value);
                 break;
                 default:
                     break;
@@ -35,23 +38,23 @@ export async function fetchAndInsert(element)
     }
 };
 
-export function handleMainContainertDisplay(action) 
+export function handleDisplay(action, element, elementType) 
 {
-    const mainContainer = document.querySelector('#main-container');
+    const container = document.querySelector(`${elementType}${element}`);
 
-    if (mainContainer)
+    if (container)
     {
         switch (action) {
             case 'toggle':
-                mainContainer.className.toggle('is-hidden');
+                container.className.toggle('is-hidden');
             break;
 
             case 'hide':
-                mainContainer.className.add('is-hidden');
+                container.className.add('is-hidden');
             break;
 
             case 'diaplay':
-                mainContainer.className.remove('is-hidden');
+                container.className.remove('is-hidden');
             break;
             default:
                 break;

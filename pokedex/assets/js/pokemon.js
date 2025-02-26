@@ -3,7 +3,6 @@ import * as commons from "./commons.js"
 
 
 export function insertPokemonInHTML(pokemonData) {
-    const minContainer = document.querySelector('#main-container');
     const pokemonTemplate = document.querySelector('#pokemon-template');
 
     const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
@@ -25,7 +24,7 @@ export function insertPokemonInHTML(pokemonData) {
         }
     );
 
-    minContainer.append(clonedPokemonTemplate);
+    commons.mainContainer.append(clonedPokemonTemplate);
   };
 
   export async function handlePokemonLinkDisplay(event) {

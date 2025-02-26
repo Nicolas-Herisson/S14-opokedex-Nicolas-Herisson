@@ -8,8 +8,6 @@ import * as commons from "./commons";
 
 export function insertTypeInHTML(typeData) {
 
-
-    const typeListHtmlElement = document.querySelector('#main-container');
     const typeTemplate = document.querySelector('#type-template');
 
     const clonedTypeTemplate = document.importNode(typeTemplate.content, true);
@@ -23,7 +21,7 @@ export function insertTypeInHTML(typeData) {
             handleTypeLinkDisplay(e);
         }
     );
-    typeListHtmlElement.append(clonedTypeTemplate);
+    commons.mainContainer.append(clonedTypeTemplate);
   };
 
   export async function handleTypeLinkDisplay(event) {
