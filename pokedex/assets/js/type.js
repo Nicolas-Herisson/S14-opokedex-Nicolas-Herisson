@@ -12,19 +12,19 @@ export function insertTypeInHTML(typeData) {
 
     const clonedTypeTemplate = document.importNode(typeTemplate.content, true);
 
-    clonedTypeTemplate.querySelector('.type-container').classList.add('cell');
+    //To request the pokemons of the type in the display part
     clonedTypeTemplate.querySelector('.type-container').dataset.id = typeData.id;
     clonedTypeTemplate.querySelector('.type-name').textContent = typeData.name;
 
     
     clonedTypeTemplate.querySelector(`.type-container`).addEventListener('click', (e) => {
-            handleTypeLinkDisplay(e, typeData.name);
+            displayPokemonsOfAType(e, typeData.name);
         }
     );
     commons.mainContainer.append(clonedTypeTemplate);
   };
 
-  export async function handleTypeLinkDisplay(event, typeName) {
+  export async function displayPokemonsOfAType(event, typeName) {
 
     event.stopImmediatePropagation();
     event.preventDefault();

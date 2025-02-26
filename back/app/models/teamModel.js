@@ -11,6 +11,7 @@ Team.init({
     position: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        defaultValue: 0
     },
 }, {
     sequelize,

@@ -1,5 +1,9 @@
+.add-button  {
+    width: 100px;
+}
+
 .pokemon-container {
-    width: 500px;
+    width: 400px;
     height: 400px;
 }
 
@@ -12,3 +16,35 @@
     width: 200px;
     height: 200px;
 }
+
+/* .team.pokemon-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+} */
+
+.field .input {
+    width: 50%;
+}
+
+#main-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    place-items: center;
+}
+
+/* .team-add {
+    width: 100px;
+    height: 50px;   
+} */
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: left; */
+    margin: 0 6rem;
+};
+
+

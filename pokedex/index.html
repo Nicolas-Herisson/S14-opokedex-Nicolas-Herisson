@@ -31,29 +31,32 @@
     <main>
         
 
-        <div class="grid-fixed has-3-cols mx-6">
-            
-            <!-- <div class="grid"> -->
-            <div class="main-title px-6 my-6 is-size-2"></div>
-            <div id="main-container" class="grid px-6"></div>
-            <!-- </div> -->
+
+        <div class="flex-container">
+            <div class="main-title my-6 is-size-2"></div>
+
+            <button class="add-button my-6 is-hidden"></button>
+
+            <div id="main-container" class=""></div>
         </div>
 
-        <template id="pokemon-template">
-                
-            <button class="pokemon-container mx-5 my-5">
-                <div>
-                    <h1 class="pokemon-name">name</h1>
-                    <img class="pokemon-image" :src="image" alt="">
-                </div>
-                <p class="pokemon-description">description</p>
-                <div class="pokemon-number"></div>
-                <div class="pokemon-type"></div>
-                <div class="pokemon-evolution">evolution</div>
-                <div class="pokemon-size">size</div>
-                <div class="pokemon-weight"></div>     
-            </button>
 
+        <template id="pokemon-template">
+            <div class="pokemon-grid-cell">
+                <button class="pokemon-container my-3" >
+                    <div>
+                        <h1 class="pokemon-name">name</h1>
+                        <img class="pokemon-image" :src="image" alt="">
+                    </div>
+                    <p class="pokemon-description">description</p>
+                    <div class="pokemon-number"></div>
+                    <div class="pokemon-type"></div>
+                    <div class="pokemon-evolution">evolution</div>
+                    <div class="pokemon-size">size</div>
+                    <div class="pokemon-weight"></div>     
+                </button>
+                <button class="pokemon-add-toTeam my-3 is-hidden">Ajouter</button>
+            </div>
         </template>
 
         <template id="type-template">
@@ -65,16 +68,30 @@
         </template>
 
         <template id="team-template">
-            <button class="team-add my-5 mx-5">Creer une equipe</button>
-            <button class="team-container mx-5 my-5">
-                <div class="team-position is-hidden"></div>
-                <div>
-                    <h2 class="team-name">team name</h1>
-                </div>
-                <div class="team pokemon-container is-hidden"></div>
-            </button>
+
+                <button class="team-button team-container my-5">
+                    <div class="team-position is-hidden"></div>
+                    <div>
+                        <h2 class="team-name"></h1>
+                    </div>
+                </button>
 
         </template>
+
+        <form class="form-container is-hidden is-4">
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                <input class="input name" type="text" placeholder="Text input">
+                </div>
+            </div>
+            
+            <div class="field is-grouped">
+                <div class="control">
+                <button class="button is-link">Submit</button>
+                </div>
+            </div>
+        </form>
     </main>
 </body>
 </html>

@@ -13,7 +13,14 @@ export async function getAllTeams(req, res) {
 export async function getTeam(req, res) {
     try {
 
-        const team = await Team.findByPk(req.params.id, { include: 'pokemons' });
+        const team = await Team.findByPk(req.params.id, {
+            include: [
+                {
+                    association: 'pokemons',
+                    include: ['types']
+                }
+            ]
+        });
 
         if (!team) {
             return res.status(404).json({ error: "Cette team n'existe pas" });
@@ -53,17 +60,17 @@ export async function addPokemonToTeam(req, res) {
         const team = await Team.findByPk(team_id);
 
         if (!team) {
-            return res.status(404).json({ error: "Cette team n'existe pas" });
+            res.status(404).json({ error: "Cette team n'existe pas" });
         };
 
 
         if (team.pokemons && team.pokemons.includes(pokemon_id)) {
             console.log("Ce pokemon est déjà dans la team");
-            return res.status(400).json({ error: "Ce pokemon est déjà dans la team" });
+            res.status(400).json({ error: "Ce pokemon est déjà dans la team" });
         };
 
         if (team.pokemons && team.pokemons.length >= 6) {
-            return res.status(400).json({ error: "La team est déjà pleine" });
+            res.status(400).json({ error: "La team est déjà pleine" });
         };
 
         await team.addPokemon(pokemon_id);
