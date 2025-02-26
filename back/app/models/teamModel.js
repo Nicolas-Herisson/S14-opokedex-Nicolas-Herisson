@@ -11,7 +11,6 @@ Team.init({
     position: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        autoIncrement: true
     },
 }, {
     sequelize,

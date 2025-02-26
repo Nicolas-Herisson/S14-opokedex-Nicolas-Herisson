@@ -3,7 +3,8 @@ import * as commons from "./commons.js"
 export async function init()
 {
     await handlePokemonButton();
-    handleTypesButton();
+    await handleTypesButton();
+    await handleTeamButton();
 };
 
 async function handlePokemonButton()
@@ -12,6 +13,8 @@ async function handlePokemonButton()
     pokemonButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
+        commons.setMainTitle("Tous les pokemons :");
+
         await commons.fetchAndInsert('pokemons');
     });
 };
@@ -21,7 +24,10 @@ async function handleTypesButton()
     const typesButton = document.querySelector('.navbar-button-types');
     typesButton.addEventListener('click', async (e) => {
 
+        //e.stopImmediatePropagation();
         commons.purgeMainContainer();
+        commons.setMainTitle("Tous les types de pokemon :");
+
         await commons.fetchAndInsert('types');
         console.log("types");
     });
@@ -29,13 +35,14 @@ async function handleTypesButton()
 
 async function handleTeamButton()
 {
-    const teamButton = document.querySelector('.navbar-button-types');
-    
-    commons.purgeMainContainer();
+    const teamButton = document.querySelector('.navbar-button-teams');
 
     teamButton.addEventListener('click', async (e) => {
 
-        await commons.fetchAndInsert('teams');
-        console.log("types");
+        commons.purgeMainContainer();
+        commons.setMainTitle("Tous les equipes :");
+        //e.stopImmediatePropagation();
+
+       await commons.fetchAndInsert('teams');
     });
 };

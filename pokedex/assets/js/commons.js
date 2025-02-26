@@ -67,4 +67,9 @@ export function purgeMainContainer()
     const mainContainer = document.querySelector('#main-container');
 
     mainContainer.textContent = "";
-}
+};
+
+export function setMainTitle(name)
+{
+    const title = document.querySelector('.main-title').textContent = name;
+};

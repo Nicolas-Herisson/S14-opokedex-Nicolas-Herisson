@@ -20,17 +20,18 @@ export function insertPokemonInHTML(pokemonData) {
 
     
     clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
-            handlePokemonLinkDisplay(e);
+            handlePokemonLinkDisplay(e, pokemonData.name);
         }
     );
 
     commons.mainContainer.append(clonedPokemonTemplate);
   };
 
-  export async function handlePokemonLinkDisplay(event) {
+  export async function handlePokemonLinkDisplay(event, pokemonName) {
     event.stopImmediatePropagation();
     event.preventDefault();
     commons.purgeMainContainer();
+    commons.setMainTitle(pokemonName);
 
     try {
         const id = event.currentTarget.closest('.pokemon-container').dataset.id;

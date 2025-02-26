@@ -18,17 +18,18 @@ export function insertTypeInHTML(typeData) {
 
     
     clonedTypeTemplate.querySelector(`.type-container`).addEventListener('click', (e) => {
-            handleTypeLinkDisplay(e);
+            handleTypeLinkDisplay(e, typeData.name);
         }
     );
     commons.mainContainer.append(clonedTypeTemplate);
   };
 
-  export async function handleTypeLinkDisplay(event) {
+  export async function handleTypeLinkDisplay(event, typeName) {
 
     event.stopImmediatePropagation();
     event.preventDefault();
     commons.purgeMainContainer();
+    commons.setMainTitle(`Pokemon(s) de type ${typeName}`);
 
     try {
         const id = event.currentTarget.closest('.type-container').dataset.id;
