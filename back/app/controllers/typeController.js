@@ -14,9 +14,9 @@ export async function getType(req, res) {
     try {
         const type = await Type.findByPk(req.params.id);
 
-        if (!type) {
+        if (!type) 
             return res.status(404).json({ error: "Ce type de pokemon n'existe pas" });
-        };
+        
 
         res.status(200).json(type);
     } catch (error) {
@@ -30,9 +30,9 @@ export async function getPokemonsByType(req, res) {
 
         const type = await Type.findByPk(id, { include: 'pokemons' });
 
-        if (!type) {
+        if (!type) 
             return res.status(404).json({ error: "Ce type de pokemon n'existe pas" });
-        };
+        
 
         res.status(200).json(type.pokemons);
     } catch (error) {

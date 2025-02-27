@@ -6,6 +6,7 @@ import cors from "cors";
 import { pokemonRouter } from "./app/routers/pokemonRouter.js";
 import { typeRouter } from "./app/routers/typeRouter.js";
 import { teamRouter } from "./app/routers/teamRouter.js";
+import { voteRouter } from "./app/routers/voteRouter.js";
 import bodyParser from "body-parser";
 
 
@@ -24,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(pokemonRouter);
 app.use(typeRouter);
 app.use(teamRouter);
+app.use(voteRouter);
 
 
 const port = process.env.PORT || 3000;

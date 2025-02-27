@@ -15,9 +15,9 @@ export async function getPokemon(req, res) {
         const id = req.params.id;
         const pokemon = await Pokemon.findByPk(id, { include: 'types' });
 
-        if (!pokemon) {
-            res.status(404).json({ error: "Ce pokemon n'existe pas!" });
-        }
+        if (!pokemon) 
+            return res.status(404).json({ error: "Ce pokemon n'existe pas!" });
+        
 
         res.status(200).json(pokemon);
     } catch (error) {

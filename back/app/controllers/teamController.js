@@ -34,18 +34,19 @@ export async function getTeam(req, res) {
 
 export async function createTeam(req, res) {
     try {
+        const { name } = req.body;
 
-        if (!req.body.name) 
+        if (!name) 
             return res.status(400).json({ error: "Le nom de la team est requis" });
         
 
-        const existsTeam = await Team.findOne({ where: { name: req.body.name } });
+        const existsTeam = await Team.findOne({ where: { name: name } });
 
         if (existsTeam) 
             return res.status(400).json({ error: "Une team avec ce nom existe déjà" });
         
 
-        const team = await Team.create({name: req.body.name});
+        const team = await Team.create({name: name});
 
         res.status(201).json(team);
     } catch (error) {
@@ -56,9 +57,9 @@ export async function createTeam(req, res) {
 export async function addPokemonToTeam(req, res) {
     try {
         const { team_id, pokemon_id } = req.params;
-console.log(team_id, pokemon_id);
+
         const team = await Team.findByPk(team_id);
-console.log(team);
+
         if (!team) 
             return res.status(404).json({ error: "Cette team n'existe pas" });  
 
