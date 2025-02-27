@@ -1,5 +1,5 @@
 import * as commons from "./commons.js"
-import {insertPokemonInHTML} from "./pokemon.js"
+import {insertPokemonInHTML, displayOnePokemon} from "./pokemon.js"
 import {apiBaseUrl} from "./config.js";
 
 export async function insertTeamInHTML(teamData)
@@ -121,7 +121,7 @@ export async function insertPokemonsOfATeamInHTML(teamPokemonsData)
         //          setup pokemon template 
         const pokemonTemplate = document.querySelector('#pokemon-template');
         const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
-        //clonedPokemonTemplate.querySelector('.pokemon-container').dataset.id = teamPokemons.data.id;
+        clonedPokemonTemplate.querySelector('.pokemon-container').dataset.id = pokemon.id;
         clonedPokemonTemplate.querySelector('.pokemon-number').textContent = "Numero : "+pokemon.id;
         clonedPokemonTemplate.querySelector('.pokemon-name').textContent = pokemon.name;
         clonedPokemonTemplate.querySelector('.pokemon-description').textContent = pokemon.description;
@@ -130,6 +130,11 @@ export async function insertPokemonsOfATeamInHTML(teamPokemonsData)
         clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = "Poids : "+pokemon.weight + "kg";
         clonedPokemonTemplate.querySelector('.pokemon-type').textContent = "Type : "+pokemon.types.map(type => type.name).join(', ');
         clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemon.image;
+
+        clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
+            displayOnePokemon(e, pokemon.name);
+        }
+    );
 
         commons.mainContainer.append(clonedPokemonTemplate);
     }

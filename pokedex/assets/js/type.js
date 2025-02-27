@@ -45,7 +45,7 @@ export function insertTypeInHTML(typeData) {
 
         for (const pokemonByType of pokemonsByType)
         {
-
+            //  because pokemonByType return pokemon without id
             const allPokemons = await commons.getAllPokemons();
             allPokemons.map(pokemon => {
                 if (pokemon.id === pokemonByType.id) {

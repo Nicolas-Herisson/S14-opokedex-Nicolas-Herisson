@@ -35,8 +35,11 @@ export function insertPokemonInHTML(pokemonData, teamId) {
   export async function displayOnePokemon(event, pokemonName) {
     event.stopImmediatePropagation();
     event.preventDefault();
+    
     commons.purgeMainContainer();
     commons.setMainTitle(pokemonName);
+    commons.addButton.classList.add('is-hidden');
+    commons.addButton.textContent = "";
 
     try {
         const id = event.currentTarget.closest('.pokemon-container').dataset.id;
