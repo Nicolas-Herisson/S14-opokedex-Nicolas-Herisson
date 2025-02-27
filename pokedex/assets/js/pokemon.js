@@ -21,7 +21,7 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     if (teamId)
     {
         clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).classList.remove('is-hidden');
-        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamData.id, pokemonData.id)});
+        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamId, pokemonData.id)});
     }
 
     clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
@@ -35,7 +35,7 @@ export function insertPokemonInHTML(pokemonData, teamId) {
   export async function displayOnePokemon(event, pokemonName) {
     event.stopImmediatePropagation();
     event.preventDefault();
-    
+
     commons.purgeMainContainer();
     commons.setMainTitle(pokemonName);
     commons.addButton.classList.add('is-hidden');
@@ -65,6 +65,7 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     event.stopImmediatePropagation();
     event.preventDefault();
 
+
     try {
         const errorMessage = await teamChecker(pokemonId, teamId);
 
@@ -73,18 +74,16 @@ export function insertPokemonInHTML(pokemonData, teamId) {
             throw new Error(errorMessage);
         }
 
-        response = await fetch(`${apiBaseUrl}/teams/${teamId}/pokemons/${pokemonId}`, {
+        const response = await fetch(`${apiBaseUrl}/teams/${teamId}/pokemons/${pokemonId}`, {
             method: 'PUT',
         });
 
-        if (!response.ok) {
+        if (!response.ok) 
             throw new Error('Erreur lors de l\'ajout du pokemon à l\'equipe');
-        };
+        
 
         const team = await response.json();
 
-        console.log(team);
- 
 
     } catch (error) {
         alert(error);
@@ -96,23 +95,20 @@ async function teamChecker(pokemonId, teamId)
     try {
         let response = await fetch(`${apiBaseUrl}/teams/${teamId}`);
 
-        if (!response.ok) {
+        if (!response.ok) 
             throw new Error('Erreur lors de la récupération de l\'équipe');
-        };
 
         const selectedTeam = await response.json();
 
-        if (selectedTeam.pokemons.length >= 6) {
+        if (selectedTeam.pokemons.length >= 6) 
             throw new Error('Cette équipe est déjà pleine');
-        };
 
         selectedTeam.pokemons.forEach(pokemon => {
-            if (pokemon.id === pokemonId) {
+            if (pokemon.id === pokemonId) 
                 throw new Error('Ce pokemon est deja dans l\'equipe');
-            }
         });
 
     } catch (error) {
-        return error;
+        alert(error)
     }
   };

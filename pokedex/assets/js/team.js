@@ -13,29 +13,10 @@ export async function insertTeamInHTML(teamData)
     commons.addButton.textContent = "Ajouter une équipe :";
     commons.addButton.addEventListener('click',  displayAddTeamForm);
 
-    // if (!teamData || teamData.length === 0)
-    //     clonedTeamTemplate.querySelectorAll('.team-button').forEach(button => button.classList.add('is-hidden'));
-
     clonedTeamTemplate.querySelector('.team-name').textContent = teamData.name;
     clonedTeamTemplate.querySelector('.team-position').textContent = teamData.position;
 
     clonedTeamTemplate.querySelector('.team-container').addEventListener('click',  (e) => {displayPokemonsOfATeam(e, teamData)});
-    //clonedTeamTemplate.querySelector(`.team-add`).addEventListener('click',  handleAddTeamSetup);
-
-
-
-    // if (teamData.pokemons && teamData.pokemons.length > 0)
-    // {
-    //     clonedTeamTemplate.querySelector('.team.pokemon-container').classList.remove('is-hidden');
-
-    //     for (const pokemon of teamData.pokemons)
-    //     {
-    //         console.log(pokemon)
-    //         insertPokemonInHTML(pokemon);
-    //     }
-    // }
-    
-
 
     commons.mainContainer.append(clonedTeamTemplate);
 };
@@ -88,11 +69,12 @@ export async function displayPokemonsOfATeam(event, teamData)
         commons.addButton.removeEventListener('click', displayAddTeamForm);
         commons.addButton.classList.remove('is-hidden');
         commons.addButton.textContent = "Ajouter un pokemon à l'équipe :";
+
         commons.addButton.addEventListener('click', (e) => {pokemonSelectionList(e, teamData.id)});
      }
 
 
-    insertPokemonsOfATeamInHTML(team.pokemons);
+    insertPokemonsOfATeamInHTML(team);
    //insertTeamPokemonsInHTML(team.pokemons);
      
     } catch (error) {
@@ -103,20 +85,20 @@ export async function displayPokemonsOfATeam(event, teamData)
 
 
 
-export async function insertPokemonsOfATeamInHTML(teamPokemonsData)
+export async function insertPokemonsOfATeamInHTML(teamData)
 {
     //          setup team container
     const teamTemplate = document.querySelector('#team-template');
     const clonedTeamTemplate = document.importNode(teamTemplate.content, true);
-    //const pokemonContainer = clonedTeamTemplate.querySelector('.team-button.team-container');
+
 
     clonedTeamTemplate.querySelectorAll('.team-button').forEach(button => button.classList.add('is-hidden'));
 
-    //pokemonContainer.classList.remove('is-hidden');
+
     commons.mainContainer.append(clonedTeamTemplate);
 
-//console.log(teamPokemonsData.length)
-    for (const pokemon of teamPokemonsData) 
+
+    for (const pokemon of teamData.pokemons) 
     {
         //          setup pokemon template 
         const pokemonTemplate = document.querySelector('#pokemon-template');
@@ -130,10 +112,15 @@ export async function insertPokemonsOfATeamInHTML(teamPokemonsData)
         clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = "Poids : "+pokemon.weight + "kg";
         clonedPokemonTemplate.querySelector('.pokemon-type').textContent = "Type : "+pokemon.types.map(type => type.name).join(', ');
         clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemon.image;
+        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').classList.remove('is-hidden');
+        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').textContent = "Supprimer de l'équipe";
+        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').addEventListener('click', (e) => {deletePokemonFromTeam(e, teamData, pokemon.id)});
+        //clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamId, pokemonData.id)});
 
         clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
             displayOnePokemon(e, pokemon.name);
         }
+        
     );
 
         commons.mainContainer.append(clonedPokemonTemplate);
@@ -213,10 +200,44 @@ export async function pokemonSelectionList(event, teamId)
             insertPokemonInHTML(pokemon, teamId);
         }
     } catch (error) {
-        
+        alert(error);
     }
     //commons.fetchAndInsert('pokemons', teamId);
     
 };
 
 
+async function deletePokemonFromTeam(event, teamData, pokemonId)
+{
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    commons.purgeMainContainer();
+    commons.addButton.classList.remove('is-hidden');
+    commons.addButton.textContent = "Ajouter un pokemon à l'équipe :";
+    commons.addButton.addEventListener('click', (e) => {pokemonSelectionList(e, teamData.id)});
+
+    const deleteButton = event.currentTarget;
+    deleteButton.removeEventListener('click', (e) => {deletePokemonFromTeam(e, teamData, pokemonId)});
+
+    try {
+        let response = await fetch(`${apiBaseUrl}/teams/${teamData.id}/pokemons/${pokemonId}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) 
+            throw new Error("Erreur lors de la suppression du pokemon");
+
+        response = await fetch(`${apiBaseUrl}/teams/${teamData.id}`);
+
+        if (!response.ok) 
+            throw new Error("Erreur lors de la récupération de l'équipe");
+        
+        const team = await response.json();
+
+        insertPokemonsOfATeamInHTML(team);
+
+    } catch (error) {
+        alert(error);
+    }
+};

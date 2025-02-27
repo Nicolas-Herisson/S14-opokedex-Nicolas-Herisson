@@ -22,9 +22,9 @@ export async function getTeam(req, res) {
             ]
         });
 
-        if (!team) {
+        if (!team) 
             return res.status(404).json({ error: "Cette team n'existe pas" });
-        };
+        
 
         res.status(200).json(team);
     } catch (error) {
@@ -35,15 +35,15 @@ export async function getTeam(req, res) {
 export async function createTeam(req, res) {
     try {
 
-        if (!req.body.name) {
+        if (!req.body.name) 
             return res.status(400).json({ error: "Le nom de la team est requis" });
-        };
+        
 
         const existsTeam = await Team.findOne({ where: { name: req.body.name } });
 
-        if (existsTeam) {
+        if (existsTeam) 
             return res.status(400).json({ error: "Une team avec ce nom existe déjà" });
-        };
+        
 
         const team = await Team.create({name: req.body.name});
 
@@ -59,23 +59,21 @@ export async function addPokemonToTeam(req, res) {
 
         const team = await Team.findByPk(team_id);
 
-        if (!team) {
-            res.status(404).json({ error: "Cette team n'existe pas" });
-        };
+        if (!team) 
+            res.status(404).json({ error: "Cette team n'existe pas" });  
 
 
-        if (team.pokemons && team.pokemons.includes(pokemon_id)) {
-            console.log("Ce pokemon est déjà dans la team");
+        if (team.pokemons && team.pokemons.includes(pokemon_id)) 
             res.status(400).json({ error: "Ce pokemon est déjà dans la team" });
-        };
+        
 
-        if (team.pokemons && team.pokemons.length >= 6) {
+        if (team.pokemons && team.pokemons.length >= 6) 
             res.status(400).json({ error: "La team est déjà pleine" });
-        };
+        
 
-        await team.addPokemon(pokemon_id);
+        const newTeam = await team.addPokemon(pokemon_id);
 
-        res.status(200).json(team);
+        res.status(200).json(newTeam);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     };
@@ -87,9 +85,9 @@ export async function removePokemonFromTeam(req, res) {
 
         const team = await Team.findByPk(team_id);
 
-        if (!team) {
+        if (!team) 
             return res.status(404).json({ error: "Cette team n'existe pas" });
-        };
+        
 
         await team.removePokemon(pokemon_id);
 
@@ -103,9 +101,9 @@ export async function deleteTeam(req, res) {
     try {
         const team = await Team.findByPk(req.params.id);
 
-        if (!team) {
+        if (!team) 
             return res.status(404).json({ error: "Cette team n'existe pas" });
-        };
+        
 
         await team.destroy();
 
@@ -119,19 +117,19 @@ export async function updateTeam(req, res) {
     try {
         const team = await Team.findByPk(req.params.id);
 
-        if (!team) {
+        if (!team) 
             return res.status(404).json({ error: "Cette team n'existe pas" });
-        };
+        
 
-        if (!req.body.name) {
+        if (!req.body.name) 
             return res.status(400).json({ error: "Le nom de la team est requis" });
-        };
+        
 
         const existsTeam = await Team.findOne({ where: { name: req.body.name } });
 
-        if (existsTeam && existsTeam.id != req.params.id) {
+        if (existsTeam && existsTeam.id != req.params.id) 
             return res.status(400).json({ error: "Une team avec ce nom existe déjà" });
-        };
+        
 
         team.name = req.body.name;
         await team.save();
