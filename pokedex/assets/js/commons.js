@@ -6,7 +6,6 @@ import { insertTeamInHTML } from "./team.js";
 export const mainContainer = document.querySelector('#main-container');
 export const teamContainer = document.querySelector('#team-container');
 export const formContainer = document.querySelector('.form-container');
-export const addButton = document.querySelector('.add-button');
 
 
 export async function getAllPokemons()
@@ -42,6 +41,7 @@ export async function fetchAndInsert(element)
                     break;
                 case 'teams':
                     insertTeamInHTML(value);
+                    document.querySelector('.add-team').classList.remove('is-hidden');
                 break;
                 default:
                     break;

@@ -1,5 +1,5 @@
 import * as commons from "./commons.js"
-import { pokemonSelectionList } from "./team.js";
+import { pokemonSelectionList, displayAddTeamForm } from "./team.js";
 
 export async function init()
 {
@@ -43,7 +43,6 @@ async function handleTeamButton()
 
         commons.purgeMainContainer();
         commons.setMainTitle("Tous les equipes :");
-        commons.addButton.removeEventListener('click', pokemonSelectionList);
 
         await commons.fetchAndInsert('teams');
     });

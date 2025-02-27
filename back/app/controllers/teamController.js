@@ -56,19 +56,19 @@ export async function createTeam(req, res) {
 export async function addPokemonToTeam(req, res) {
     try {
         const { team_id, pokemon_id } = req.params;
-
+console.log(team_id, pokemon_id);
         const team = await Team.findByPk(team_id);
-
+console.log(team);
         if (!team) 
-            res.status(404).json({ error: "Cette team n'existe pas" });  
+            return res.status(404).json({ error: "Cette team n'existe pas" });  
 
 
         if (team.pokemons && team.pokemons.includes(pokemon_id)) 
-            res.status(400).json({ error: "Ce pokemon est déjà dans la team" });
+            return res.status(400).json({ error: "Ce pokemon est déjà dans la team" });
         
 
         if (team.pokemons && team.pokemons.length >= 6) 
-            res.status(400).json({ error: "La team est déjà pleine" });
+            return res.status(400).json({ error: "La team est déjà pleine" });
         
 
         const newTeam = await team.addPokemon(pokemon_id);
@@ -105,9 +105,9 @@ export async function deleteTeam(req, res) {
             return res.status(404).json({ error: "Cette team n'existe pas" });
         
 
-        await team.destroy();
+        const destroyedTeam = await team.destroy();
 
-        res.status(204).end();
+        res.status(204).json(destroyedTeam);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     };

@@ -35,9 +35,6 @@
         <div class="flex-container">
             <div class="main-title my-6 is-size-2"></div>
 
-            <button class="add-button my-6 is-hidden"></button>
-
-
             <div id="main-container" class=""></div>
         </div>
 
@@ -57,12 +54,12 @@
                     <div class="pokemon-weight"></div>     
                 </button>
                 <button class="pokemon-add-toTeam my-3 is-hidden">Ajouter</button>
-                <button class="pokemon-delete-toTeam my-3 is-hidden">Supprimer</button>
+                <button class="pokemon-delete-toTeam my-3 is-hidden">Supprimer pokemon</button>
             </div>
         </template>
 
         <template id="type-template">
-                
+            
             <button class="type-container mx-5 my-5">
                 <div class="type-name"></div>     
             </button>
@@ -70,13 +67,15 @@
         </template>
 
         <template id="team-template">
-
-                <button class="team-button team-container my-5">
-                    <div class="team-position is-hidden"></div>
-                    <div>
-                        <h2 class="team-name"></h1>
-                    </div>
-                </button>
+            <button class="team add-team my-6 is-hidden">Ajouter une equipe</button>
+            <button class="team delete-team my-6 is-hidden">Supprimer l'équipe</button>
+            <button class="team add-pokemon-toTeam my-6 is-hidden">Ajouter un pokemon</button>
+            <button class="team-button team-container my-5">
+                <div class="team-position is-hidden"></div>
+                <div>
+                    <h2 class="team-name"></h1>
+                </div>
+            </button>
 
         </template>
 

@@ -47,9 +47,9 @@ export function insertPokemonInHTML(pokemonData, teamId) {
 
         const response = await fetch(`${apiBaseUrl}/pokemons/${id}`);
 
-        if (!response.ok) {
+        if (!response.ok) 
             throw new Error('Erreur lors de la récupération du pokemon');
-        };
+        
 
         const pokemon = await response.json();
 
@@ -69,10 +69,10 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     try {
         const errorMessage = await teamChecker(pokemonId, teamId);
 
-        if (errorMessage)
-        {
+        if (errorMessage && errorMessage !== "")  
             throw new Error(errorMessage);
-        }
+        
+
 
         const response = await fetch(`${apiBaseUrl}/teams/${teamId}/pokemons/${pokemonId}`, {
             method: 'PUT',
@@ -92,21 +92,24 @@ export function insertPokemonInHTML(pokemonData, teamId) {
 
 async function teamChecker(pokemonId, teamId) 
 {
+    let errorMessage = '';
     try {
         let response = await fetch(`${apiBaseUrl}/teams/${teamId}`);
 
         if (!response.ok) 
-            throw new Error('Erreur lors de la récupération de l\'équipe');
+            errorMessage = 'Erreur lors de la récupération de l\'équipe';
 
         const selectedTeam = await response.json();
 
         if (selectedTeam.pokemons.length >= 6) 
-            throw new Error('Cette équipe est déjà pleine');
+            errorMessage = 'Cette équipe est déjà pleine';
 
         selectedTeam.pokemons.forEach(pokemon => {
             if (pokemon.id === pokemonId) 
-                throw new Error('Ce pokemon est deja dans l\'equipe');
+                errorMessage = 'Ce pokemon est deja dans l\'equipe';
         });
+
+        return errorMessage;
 
     } catch (error) {
         alert(error)
