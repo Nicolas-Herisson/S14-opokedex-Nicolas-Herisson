@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as voteController from './controllers/voteController.js';
+import * as voteController from '../controllers/voteController.js';
 
 export const voteRouter = Router();
 
