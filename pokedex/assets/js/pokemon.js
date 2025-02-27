@@ -61,7 +61,7 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     }
   };
 
-  export async function addPokemonToTeam(event, teamId, pokemonId) {
+async function addPokemonToTeam(event, teamId, pokemonId) {
     event.stopImmediatePropagation();
     event.preventDefault();
 

@@ -24,7 +24,7 @@ export function insertTypeInHTML(typeData) {
     commons.mainContainer.append(clonedTypeTemplate);
   };
 
-  export async function displayPokemonsOfAType(event, typeName) {
+async function displayPokemonsOfAType(event, typeName) {
 
     event.stopImmediatePropagation();
     event.preventDefault();

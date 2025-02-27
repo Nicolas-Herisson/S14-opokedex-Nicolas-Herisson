@@ -21,23 +21,7 @@ export async function insertTeamInHTML(teamData)
     commons.mainContainer.append(clonedTeamTemplate);
 };
 
-//          CLICK ON TEAM BUTTON
-export async function displayAddTeamForm(event)
-{
-    event.stopImmediatePropagation();
-    event.preventDefault();
-    commons.purgeMainContainer();
-    commons.setMainTitle("Ajouter une team :");
-
-
-    //      Display form
-    commons.mainContainer.append(commons.formContainer);
-    commons.formContainer.classList.remove('is-hidden');
-
-    commons.formContainer.addEventListener('submit', addAndDisplayTeams);
-};
-
-export async function displayPokemonsOfATeam(event, teamData)
+async function displayPokemonsOfATeam(event, teamData)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -52,14 +36,18 @@ export async function displayPokemonsOfATeam(event, teamData)
     try {
      const response = await fetch(`${apiBaseUrl}/teams/${teamData.id}`);
 
-     if (!response.ok) {
+     if (!response.ok) 
          throw new Error("Erreur lors de la récupération de l'équipe");
-     }
+     
 
      const team = await response.json();
 
 
     insertPokemonsOfATeamInHTML(team);
+
+    const updateButton = document.querySelector('.team.update-team');
+    updateButton.classList.remove('is-hidden');
+    updateButton.addEventListener('click', (e) => {displayUpdateTeamForm(e, teamData)});
 
     if (team.pokemons && team.pokemons.length < 6)
     {
@@ -78,9 +66,122 @@ export async function displayPokemonsOfATeam(event, teamData)
     
 };
 
+//          CLICK ON TEAM BUTTON
+async function displayAddTeamForm(event)
+{
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    commons.purgeMainContainer();
+    commons.setMainTitle("Ajouter une équipe :");
 
 
-export async function insertPokemonsOfATeamInHTML(teamData)
+    //      Display form
+    commons.mainContainer.append(commons.formContainer);
+    commons.formContainer.classList.remove('is-hidden');
+
+    commons.formContainer.addEventListener('submit', submitButtonAddAndDisplayTeams);
+};
+
+async function displayUpdateTeamForm(event, teamData)
+{
+    event.stopImmediatePropagation();
+    event.preventDefault();
+    commons.purgeMainContainer();
+    commons.setMainTitle("Modifer le nom de l'équipe :");
+
+
+    //      Display form
+    commons.mainContainer.append(commons.formContainer);
+    commons.formContainer.classList.remove('is-hidden');
+    commons.formContainer.querySelector('.input.name').value = teamData.name;
+
+    commons.formContainer.addEventListener('submit',  (e) => {submitButtonDisplayUpdateTeamForm(e, teamData.id)});
+    
+};
+
+async function submitButtonAddAndDisplayTeams(event)
+{
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    let name = commons.formContainer.querySelector('.input.name').value;
+
+    if (!name || name.length === 0)
+    {
+        alert("Le nom de l'équipe est requis");
+        return;
+    }
+    name = commons.sanitizer(name);
+
+
+    try {
+        const response = await fetch(`${apiBaseUrl}/teams`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name: name})
+        });
+
+        if (!response.ok) 
+            throw new Error("Erreur lors de la création de l'équipe");
+        
+
+        const team = await response.json();
+
+        commons.formContainer.querySelector('.input.name').value = "";
+        commons.purgeMainContainer();
+        commons.fetchAndInsert('teams');
+
+    } catch (error) {
+        alert(error);
+    }
+    
+
+
+
+};
+
+async function submitButtonDisplayUpdateTeamForm(event, teamId)  
+{   
+    event.stopImmediatePropagation();
+    event.preventDefault();
+
+    let name = commons.formContainer.querySelector('.input.name').value;
+
+        if (!name || name.length === 0)
+        {
+            alert("Le nom de l'équipe est requis");
+            return;
+        }
+    
+        name = commons.sanitizer(name);
+    
+    
+        try {
+            const response = await fetch(`${apiBaseUrl}/teams/${teamId}`, {
+                method: 'PATCH',
+                headers: {  
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({name: name})
+            });
+    
+            if (!response.ok) 
+                throw new Error("Erreur lors de la mise à jour de l'équipe");
+            
+    
+            const team = await response.json();
+    
+            commons.formContainer.querySelector('.input.name').value = "";
+            commons.purgeMainContainer();
+            commons.fetchAndInsert('teams');
+    
+        } catch (error) {
+            alert(error);
+}};
+
+async function insertPokemonsOfATeamInHTML(teamData)
 {
     //          setup team container
     const teamTemplate = document.querySelector('#team-template');
@@ -128,52 +229,7 @@ export async function insertPokemonsOfATeamInHTML(teamData)
 };
 
 
-
-export async function addAndDisplayTeams(event)
-{
-    event.stopImmediatePropagation();
-    event.preventDefault();
-
-    let name = commons.formContainer.querySelector('.input.name').value;
-
-    if (!name || name.length === 0)
-    {
-        alert("Le nom de l'équipe est requis");
-        return;
-    }
-    name = commons.sanitizer(name);
-
-
-    try {
-        const response = await fetch(`${apiBaseUrl}/teams`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: name})
-        });
-
-        if (!response.ok) {
-            throw new Error("Erreur lors de la création de l'équipe");
-        }
-
-        const team = await response.json();
-
-        commons.formContainer.querySelector('.input.name').value = "";
-        commons.purgeMainContainer();
-        commons.fetchAndInsert('teams');
-
-    } catch (error) {
-        alert(error);
-    }
-    
-
-
-
-};
-
-
-export async function pokemonSelectionList(event, teamId)
+async function pokemonSelectionList(event, teamId)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -184,9 +240,9 @@ export async function pokemonSelectionList(event, teamId)
 
         const response = await fetch(`${apiBaseUrl}/pokemons`);
 
-        if (!response.ok) {
+        if (!response.ok) 
             throw new Error("Erreur lors de la récupération des pokemons");
-        }
+        
 
         const pokemons = await response.json();
 
@@ -194,6 +250,7 @@ export async function pokemonSelectionList(event, teamId)
         {
             insertPokemonInHTML(pokemon, teamId);
         }
+
     } catch (error) {
         alert(error);
     }

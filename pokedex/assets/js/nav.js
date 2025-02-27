@@ -1,5 +1,4 @@
 import * as commons from "./commons.js"
-import { pokemonSelectionList, displayAddTeamForm } from "./team.js";
 
 export async function init()
 {
