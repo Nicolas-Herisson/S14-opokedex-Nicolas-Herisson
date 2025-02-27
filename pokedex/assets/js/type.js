@@ -41,12 +41,17 @@ export function insertTypeInHTML(typeData) {
             throw new Error('Erreur lors de la récupération des pokemons par type');
         };
 
-        const pokemons = await response.json();
+        const pokemonsByType = await response.json();
 
-
-        for (const pokemon of pokemons)
+        for (const pokemonByType of pokemonsByType)
         {
-            insertPokemonInHTML(pokemon);
+
+            const allPokemons = await commons.getAllPokemons();
+            allPokemons.map(pokemon => {
+                if (pokemon.id === pokemonByType.id) {
+                    insertPokemonInHTML(pokemon);
+                }
+            });
         };
 
     } catch (error) {

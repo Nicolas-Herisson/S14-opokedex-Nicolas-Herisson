@@ -82,7 +82,7 @@ export async function displayPokemonsOfATeam(event, teamData)
      }
 
      const team = await response.json();
-     console.log(team.pokemons.length);
+
      if (team.pokemons && team.pokemons.length < 6)
      {
         commons.addButton.removeEventListener('click', displayAddTeamForm);

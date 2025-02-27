@@ -8,6 +8,7 @@ async function init()
     try {
 
         await commons.fetchAndInsert('pokemons');
+
         commons.setMainTitle("Tous les pokemons :");
         nav.init();
     } catch (error) {

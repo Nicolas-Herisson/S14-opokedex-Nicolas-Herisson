@@ -8,6 +8,18 @@ export const teamContainer = document.querySelector('#team-container');
 export const formContainer = document.querySelector('.form-container');
 export const addButton = document.querySelector('.add-button');
 
+
+export async function getAllPokemons()
+{
+    const response = await fetch(`${apiBaseUrl}/pokemons`);
+
+    if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des pokemons');
+    };
+
+    return await response.json();
+}
+
 export async function fetchAndInsert(element)
 {
     try {

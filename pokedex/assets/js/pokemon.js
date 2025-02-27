@@ -17,10 +17,11 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     clonedPokemonTemplate.querySelector('.pokemon-type').textContent = "Type : "+pokemonData.types.map(type => type.name).join(', ');
     clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemonData.image;
 
+    //              add button to add pokemon to team
     if (teamId)
     {
         clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).classList.remove('is-hidden');
-        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamId, pokemonData.id)});
+        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamData.id, pokemonData.id)});
     }
 
     clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
