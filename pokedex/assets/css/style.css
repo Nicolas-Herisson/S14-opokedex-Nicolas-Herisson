@@ -3,6 +3,11 @@
     margin: 2rem;
 } */
 
+.team-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .pokemon-container {
     width: 400px;
     height: 400px;

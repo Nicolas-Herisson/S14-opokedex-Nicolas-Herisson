@@ -5,4 +5,3 @@ export const voteRouter = Router();
 
 voteRouter.get("/pokemons/leaderboard", voteController.getLeaderboard);
 voteRouter.post("/pokemons/:id/votes", voteController.createVote);
-//typeRouter.get("/types/:id", typeController.gettype);

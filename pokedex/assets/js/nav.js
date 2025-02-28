@@ -13,7 +13,7 @@ async function handlePokemonButton()
     pokemonButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.handleDisplay('hide', '.','add-button');
+        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
 
         commons.setMainTitle("Tous les pokemons :");
 
@@ -27,7 +27,7 @@ async function handleTypesButton()
     typesButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.handleDisplay('hide', '.','add-button');
+        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
         commons.setMainTitle("Tous les types de pokemon :");
 
         await commons.fetchAndInsert('types');
@@ -41,6 +41,7 @@ async function handleTeamButton()
     teamButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
+        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
         commons.setMainTitle("Tous les equipes :");
 
         await commons.fetchAndInsert('teams');

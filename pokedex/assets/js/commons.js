@@ -6,6 +6,7 @@ import { insertTeamInHTML } from "./team.js";
 export const mainContainer = document.querySelector('#main-container');
 export const teamContainer = document.querySelector('#team-container');
 export const formContainer = document.querySelector('.form-container');
+export const teamButtonContainer = document.querySelector('.team-button-container');
 
 
 export async function getAllPokemons()
@@ -101,3 +102,15 @@ export function sanitizer(value)
     sanitizedValue = sanitizedValue.replaceAll('\'', '');
     return sanitizedValue;
 };
+
+export function disableTeamButton(buttons)
+{
+    for (const button of buttons) 
+    {
+        if(document.querySelector(`.${button}`))
+        {
+            document.querySelector(`.${button}`).classList.add('is-hidden');
+        }
+
+    }
+}
