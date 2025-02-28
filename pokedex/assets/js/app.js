@@ -8,9 +8,11 @@ async function init()
     try {
 
         await commons.fetchAndInsert('pokemons');
-
+        
         commons.setMainTitle("Tous les pokemons :");
+        commons.pokemonPageSearchBarSubmitButton();
         nav.init();
+
     } catch (error) {
         alert(error);
     }

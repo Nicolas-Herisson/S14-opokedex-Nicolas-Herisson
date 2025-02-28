@@ -13,7 +13,8 @@ async function handlePokemonButton()
     pokemonButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
+        commons.displayActionsOnElements('display', ['.pokemon-page.searchBar']);
+        commons.displayActionsOnElements('hide',['.addPokemon-to-team.searchBar','.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
 
         commons.setMainTitle("Tous les pokemons :");
 
@@ -27,7 +28,7 @@ async function handleTypesButton()
     typesButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
+        commons.displayActionsOnElements('hide',['.pokemon-page.searchBar','.addPokemon-to-team.searchBar','.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
         commons.setMainTitle("Tous les types de pokemon :");
 
         await commons.fetchAndInsert('types');
@@ -41,8 +42,8 @@ async function handleTeamButton()
     teamButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
-        commons.setMainTitle("Tous les equipes :");
+        commons.displayActionsOnElements('hide',['.pokemon-page.searchBar','.addPokemon-to-team.searchBar','.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
+        commons.setMainTitle("Equipes :");
 
         await commons.fetchAndInsert('teams');
     });

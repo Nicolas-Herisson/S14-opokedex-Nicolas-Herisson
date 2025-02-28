@@ -1,8 +1,9 @@
 import { apiBaseUrl } from "./config.js";
 import * as commons from "./commons.js"
+import { deletePokemonFromTeam } from "./team.js";
 
 
-export function insertPokemonInHTML(pokemonData, teamId) {
+export function insertPokemonInHTML(pokemonData, teamId, teamPage) {
     const pokemonTemplate = document.querySelector('#pokemon-template');
 
     const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
@@ -20,41 +21,49 @@ export function insertPokemonInHTML(pokemonData, teamId) {
     //              add button to add pokemon to team
     if (teamId)
     {
-        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).classList.remove('is-hidden');
-        clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamId, pokemonData.id)});
+        if (teamPage)
+        {
+            clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).classList.remove('is-hidden');
+            clonedPokemonTemplate.querySelector(`.pokemon-add-toTeam`).addEventListener('click', (e) => {addPokemonToTeam(e, teamId, pokemonData.id)});
+        }
+        else
+        {
+            clonedPokemonTemplate.querySelector(`.pokemon-delete-toTeam`).classList.remove('is-hidden');
+        clonedPokemonTemplate.querySelector(`.pokemon-delete-toTeam`).addEventListener('click', (e) => {deletePokemonFromTeam(e, pokemonData.id)});
+        }
     }
 
     clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
-            displayOnePokemon(e, pokemonData.name);
+            displayOnePokemon(pokemonData);
         }
     );
 
     commons.mainContainer.append(clonedPokemonTemplate);
   };
 
-  export async function displayOnePokemon(event, pokemonName) {
-    event.stopImmediatePropagation();
-    event.preventDefault();
+  export async function displayOnePokemon(pokemon, teamId) {
 
     commons.purgeMainContainer();
-    commons.setMainTitle(pokemonName);
-    commons.addButton.classList.add('is-hidden');
-    commons.addButton.textContent = "";
+    //          hide team buttons if no team
+    if (!teamId)
+    {
+        commons.displayActionsOnElements('hide', ['.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
+        commons.setMainTitle(pokemon.name);
+    }
 
     try {
-        const id = event.currentTarget.closest('.pokemon-container').dataset.id;
 
 
-        const response = await fetch(`${apiBaseUrl}/pokemons/${id}`);
+        const response = await fetch(`${apiBaseUrl}/pokemons/${pokemon.id}`);
 
         if (!response.ok) 
             throw new Error('Erreur lors de la récupération du pokemon');
         
 
-        const pokemon = await response.json();
+        const requestedPokemon = await response.json();
 
+        insertPokemonInHTML(requestedPokemon, teamId);
 
-        insertPokemonInHTML(pokemon);
 
     } catch (error) {
         alert(error);
@@ -89,6 +98,8 @@ async function addPokemonToTeam(event, teamId, pokemonId) {
         alert(error);
     }
   };
+
+
 
 async function teamChecker(pokemonId, teamId) 
 {

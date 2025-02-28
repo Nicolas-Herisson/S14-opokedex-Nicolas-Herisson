@@ -3,6 +3,7 @@
     margin: 2rem;
 } */
 
+
 .team-button-container {
     display: flex;
     flex-direction: row;
@@ -30,7 +31,7 @@
 } */
 
 .field .input {
-    width: 50%;
+    width: 400px;
 }
 
 #main-container {
@@ -54,3 +55,6 @@
 };
 
 
+.field .input {
+    width: 400px;
+}

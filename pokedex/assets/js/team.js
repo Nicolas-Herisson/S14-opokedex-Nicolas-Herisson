@@ -2,7 +2,9 @@ import * as commons from "./commons.js"
 import {insertPokemonInHTML, displayOnePokemon} from "./pokemon.js"
 import {apiBaseUrl} from "./config.js";
 
-export async function insertTeamInHTML(teamData)
+export let currentTeam = null;
+
+export async function insertTeamsInHTML(teamData)
 {
 
     const teamTemplate = document.querySelector('#team-template');
@@ -10,6 +12,9 @@ export async function insertTeamInHTML(teamData)
     const clonedTeamTemplate = document.importNode(teamTemplate.content, true);
 
     //clonedTeamTemplate.querySelector('.delete-team').addEventListener('click',  (e) => {deleteTeam(e, teamData.id)});
+    clonedTeamTemplate.querySelector('.delete-team').textContent = "Supprimer l'équipe";
+    clonedTeamTemplate.querySelector('.update-team').textContent = "Modifier l'équipe";
+    clonedTeamTemplate.querySelector('.add-pokemon-toTeam').textContent = "Ajouter un Pokémon à l'équipe";
     clonedTeamTemplate.querySelector('.add-team').addEventListener('click',  displayAddTeamForm);
     clonedTeamTemplate.querySelector('.team-name').textContent = teamData.name;
     clonedTeamTemplate.querySelector('.team-position').textContent = teamData.position;
@@ -19,10 +24,13 @@ export async function insertTeamInHTML(teamData)
     commons.mainContainer.append(clonedTeamTemplate);
 
     const addTeamButton = document.querySelector('.add-team');
+    const updateTeamButton = document.querySelector('.update-team');
+    const deleteTeamButton = document.querySelector('.delete-team');
+    const addPokemonToTeamButton = document.querySelector('.add-pokemon-toTeam');
     commons.teamButtonContainer.classList.remove('is-hidden');
 
 
-    commons.teamButtonContainer.append(addTeamButton);
+    commons.teamButtonContainer.append(addTeamButton, updateTeamButton, deleteTeamButton, addPokemonToTeamButton);
 
 };
 
@@ -30,11 +38,7 @@ async function displayPokemonsOfATeam(event, teamData)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
-    commons.purgeMainContainer();
-    commons.setMainTitle(`Equipe ${teamData.name} :`);
-    
-
-    event.currentTarget.dataset.id = teamData.id;
+    currentTeam = teamData;
 
 
 
@@ -47,25 +51,10 @@ async function displayPokemonsOfATeam(event, teamData)
 
      const team = await response.json();
 
+    setupTeamPage();
 
-    insertPokemonsOfATeamInHTML(team);
 
-    const updateButton = document.querySelector('.team.update-team');
-    updateButton.classList.remove('is-hidden');
-    updateButton.addEventListener('click', (e) => {displayUpdateTeamForm(e, teamData)});
-    commons.teamButtonContainer.append(updateButton);
 
-    commons.disableTeamButton(['add-team']);
-
-    if (team.pokemons && team.pokemons.length < 6)
-    {
-        document.querySelector('.team.add-pokemon-toTeam').classList.remove('is-hidden');
-        document.querySelector('.team.add-pokemon-toTeam').addEventListener('click', (e) => {pokemonSelectionList(e, teamData.id)});
-    }
-    else
-    {
-        document.querySelector('.team.add-pokemon-toTeam').classList.add('is-hidden');
-    }
 
 
     } catch (error) {
@@ -74,12 +63,55 @@ async function displayPokemonsOfATeam(event, teamData)
     
 };
 
+function setupTeamPage()
+{
+    commons.purgeMainContainer();
+    commons.setMainTitle(`Equipe ${currentTeam.name} :`);
+
+    //          get team buttons  
+    const updateButton = document.querySelector('.team.update-team');
+    const deleteButton = document.querySelector('.team.delete-team');
+    const addPokemonToTeamButton = document.querySelector('.team.add-pokemon-toTeam');
+
+    //          setup listeners
+    deleteButton.addEventListener('click', (e) => {deleteTeam(e)});
+    addPokemonToTeamButton.addEventListener('click', (e) => {pokemonSelectionList(e)});
+    updateButton.addEventListener('click', (e) => {displayUpdateTeamForm(e, currentTeam)});
+
+    commons.teamButtonContainer.append(updateButton, deleteButton, addPokemonToTeamButton);
+
+    //          Display or hide team buttons
+    commons.displayActionsOnElements('hide', ['.team.add-team']);
+    commons.displayActionsOnElements('display', ['.team.update-team', '.team.delete-team']);
+    handleAddPokemonToTeamButton();
+
+    currentTeam.pokemons.forEach((pokemon) => {
+        displayOnePokemon(pokemon, currentTeam.id);
+    })
+};
+
+function handleAddPokemonToTeamButton()
+{
+
+
+    if (currentTeam.pokemons && currentTeam.pokemons.length < 6)
+        {
+            commons.displayActionsOnElements('display', ['.team.add-pokemon-toTeam']);
+            document.querySelector('.team.add-pokemon-toTeam').addEventListener('click', (e) => {pokemonSelectionList(e)});
+        }
+        else
+        {
+            commons.displayActionsOnElements('hide', ['.team.add-pokemon-toTeam']);
+        }
+};
+
 //          CLICK ON TEAM BUTTON
 async function displayAddTeamForm(event)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
     commons.purgeMainContainer();
+    commons.displayActionsOnElements('hide', ['.team.add-team']);
     commons.setMainTitle("Ajouter une équipe :");
 
 
@@ -95,7 +127,8 @@ async function displayUpdateTeamForm(event, teamData)
     event.stopImmediatePropagation();
     event.preventDefault();
     commons.purgeMainContainer();
-    commons.setMainTitle("Modifer le nom de l'équipe :");
+    commons.setMainTitle("Modifer le nom de l'équipe :")
+    commons.displayActionsOnElements('hide', ['.add-pokemon-toTeam', '.delete-team', '.update-team']);
 
 
     //      Display form
@@ -111,6 +144,7 @@ async function submitButtonAddAndDisplayTeams(event)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
+    commons.setMainTitle("Equipes :");
 
     let name = commons.formContainer.querySelector('.input.name').value;
 
@@ -150,10 +184,11 @@ async function submitButtonAddAndDisplayTeams(event)
 
 };
 
-async function submitButtonDisplayUpdateTeamForm(event, teamId)  
+async function submitButtonDisplayUpdateTeamForm(event)  
 {   
     event.stopImmediatePropagation();
     event.preventDefault();
+    commons.setMainTitle("Equipes :");
 
     let name = commons.formContainer.querySelector('.input.name').value;
 
@@ -167,7 +202,7 @@ async function submitButtonDisplayUpdateTeamForm(event, teamId)
     
     
         try {
-            const response = await fetch(`${apiBaseUrl}/teams/${teamId}`, {
+            const response = await fetch(`${apiBaseUrl}/teams/${currentTeam.id}`, {
                 method: 'PATCH',
                 headers: {  
                     'Content-Type': 'application/json'
@@ -183,77 +218,23 @@ async function submitButtonDisplayUpdateTeamForm(event, teamId)
     
             commons.formContainer.querySelector('.input.name').value = "";
             commons.purgeMainContainer();
-            commons.fetchAndInsert('teams');
+            currentTeam.name = name;
+            displayPokemonsOfATeam(event, currentTeam);
     
         } catch (error) {
             alert(error);
 }};
 
-async function insertPokemonsOfATeamInHTML(teamData)
-{
-    //          setup team container
-    const teamTemplate = document.querySelector('#team-template');
-    const clonedTeamTemplate = document.importNode(teamTemplate.content, true);
-    clonedTeamTemplate.querySelector('.team.add-pokemon-toTeam').addEventListener('click', (e) => {pokemonSelectionList(e, teamData.id)});
 
-
-
-    clonedTeamTemplate.querySelectorAll('.team-button').forEach(button => button.classList.add('is-hidden'));
-
-    commons.mainContainer.append(clonedTeamTemplate);
-
-    //          setup delete team button
-    const deleteTeamButton = document.querySelector('.delete-team');
-    deleteTeamButton.classList.remove('is-hidden');
-    deleteTeamButton.addEventListener('click', (e) => {deleteTeam(e, teamData.id)});
-
-    //          setup add pokemon to team button
-    const addPokemonToTeamButton = document.querySelector('.add-pokemon-toTeam');
-    addPokemonToTeamButton.classList.remove('is-hidden');
-    addPokemonToTeamButton.addEventListener('click', (e) => {pokemonSelectionList(e, teamData.id)});
-
-
-    commons.teamButtonContainer.append(deleteTeamButton, addPokemonToTeamButton);
-
-    for (const pokemon of teamData.pokemons) 
-    {
-        //          setup pokemon template 
-        const pokemonTemplate = document.querySelector('#pokemon-template');
-        const clonedPokemonTemplate = document.importNode(pokemonTemplate.content, true);
-        clonedPokemonTemplate.querySelector('.pokemon-container').dataset.id = pokemon.id;
-        clonedPokemonTemplate.querySelector('.pokemon-number').textContent = "Numero : "+pokemon.id;
-        clonedPokemonTemplate.querySelector('.pokemon-name').textContent = pokemon.name;
-        clonedPokemonTemplate.querySelector('.pokemon-description').textContent = pokemon.description;
-        clonedPokemonTemplate.querySelector('.pokemon-evolution').textContent = "Evolution : "+pokemon.evolution;
-        clonedPokemonTemplate.querySelector('.pokemon-size').textContent = "Taille : "+pokemon.size + "m";
-        clonedPokemonTemplate.querySelector('.pokemon-weight').textContent = "Poids : "+pokemon.weight + "kg";
-        clonedPokemonTemplate.querySelector('.pokemon-type').textContent = "Type : "+pokemon.types.map(type => type.name).join(', ');
-        clonedPokemonTemplate.querySelector('.pokemon-image').src = pokemon.image;
-        //          delete pokemon from list button setup
-        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').classList.remove('is-hidden');
-        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').textContent = "Supprimer de l'équipe";
-        clonedPokemonTemplate.querySelector('.pokemon-delete-toTeam').addEventListener('click', (e) => {deletePokemonFromTeam(e, teamData, pokemon.id)});
-
-        clonedPokemonTemplate.querySelector(`.pokemon-container`).addEventListener('click', (e) => {
-            displayOnePokemon(e, pokemon.name);
-        }
-        
-    );
-
-
-        commons.mainContainer.append(clonedPokemonTemplate);
-    }
-
-};
-
-
-async function pokemonSelectionList(event, teamId)
+async function pokemonSelectionList(event)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
     commons.purgeMainContainer();
-    commons.disableTeamButton(['add-team', 'add-pokemon-toTeam', 'delete-team', 'update-team']);
+    commons.displayActionsOnElements('hide', ['.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
+    commons.displayActionsOnElements('display', ['.addPokemon-to-team.searchBar']);
     commons.setMainTitle(`Ajouter un pokemon à l'équipe :`);
+
 
     try {
 
@@ -267,7 +248,7 @@ async function pokemonSelectionList(event, teamId)
 
         for (const pokemon of pokemons)
         {
-            insertPokemonInHTML(pokemon, teamId);
+            insertPokemonInHTML(pokemon, currentTeam.id, true);
         }
 
     } catch (error) {
@@ -276,8 +257,7 @@ async function pokemonSelectionList(event, teamId)
     
 };
 
-
-async function deletePokemonFromTeam(event, teamData, pokemonId)
+export async function deletePokemonFromTeam(event, pokemonId)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
@@ -285,21 +265,24 @@ async function deletePokemonFromTeam(event, teamData, pokemonId)
     commons.purgeMainContainer();
 
     try {
-        let response = await fetch(`${apiBaseUrl}/teams/${teamData.id}/pokemons/${pokemonId}`, {
+        let response = await fetch(`${apiBaseUrl}/teams/${currentTeam.id}/pokemons/${pokemonId}`, {
             method: 'DELETE'
         });
 
         if (!response.ok) 
             throw new Error("Erreur lors de la suppression du pokemon");
 
-        response = await fetch(`${apiBaseUrl}/teams/${teamData.id}`);
+        response = await fetch(`${apiBaseUrl}/teams/${currentTeam.id}`);
 
         if (!response.ok) 
             throw new Error("Erreur lors de la récupération de l'équipe");
         
-        const team = await response.json();
+        currentTeam = await response.json();
 
-        insertPokemonsOfATeamInHTML(team);
+        currentTeam.pokemons.forEach(pokemon => {
+            displayOnePokemon(pokemon, currentTeam.id);
+        })
+        
 
         document.querySelector('.team.add-pokemon-toTeam').classList.remove('is-hidden');
 
@@ -308,15 +291,17 @@ async function deletePokemonFromTeam(event, teamData, pokemonId)
     }
 };
 
-async function deleteTeam(event, teamId)
+async function deleteTeam(event)
 {
     event.stopImmediatePropagation();
     event.preventDefault();
+    commons.setMainTitle("Equipes :");
+    commons.displayActionsOnElements('hide', ['.add-pokemon-toTeam', '.delete-team', '.update-team']);
 
     commons.purgeMainContainer();
 
     try {
-        const response = await fetch(`${apiBaseUrl}/teams/${teamId}`, {
+        const response = await fetch(`${apiBaseUrl}/teams/${currentTeam.id}`, {
             method: 'DELETE'
         });
 
