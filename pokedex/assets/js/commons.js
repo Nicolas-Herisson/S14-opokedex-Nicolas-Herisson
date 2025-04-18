@@ -139,7 +139,6 @@ export function pokemonPageSearchBarSubmitButton()
             pokemons.forEach(pokemon => {
                 if (pokemon.name.toLowerCase().includes(sanitizer(searchBarInput.toLowerCase())))
                 {
-                    console.log("Found")
                     insertPokemonInHTML(pokemon);
                 }
             })
@@ -170,7 +169,6 @@ export function addPokemonToTeamSearchBarSubmitButton()
             pokemons.forEach(pokemon => {
                 if (pokemon.name.toLowerCase().includes(sanitizer(searchBarInput.toLowerCase())))
                 {
-                    console.log("Found")
                     insertPokemonInHTML(pokemon);
                 }
             })

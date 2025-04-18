@@ -6,14 +6,13 @@ export let currentTeam = null;
 
 export async function insertTeamsInHTML(teamData)
 {
-
     const teamTemplate = document.querySelector('#team-template');
 
     const clonedTeamTemplate = document.importNode(teamTemplate.content, true);
 
     //clonedTeamTemplate.querySelector('.delete-team').addEventListener('click',  (e) => {deleteTeam(e, teamData.id)});
     clonedTeamTemplate.querySelector('.delete-team').textContent = "Supprimer l'équipe";
-    clonedTeamTemplate.querySelector('.update-team').textContent = "Modifier l'équipe";
+    clonedTeamTemplate.querySelector('.update-team').textContent = "Modifier le nom de l'équipe";
     clonedTeamTemplate.querySelector('.add-pokemon-toTeam').textContent = "Ajouter un Pokémon à l'équipe";
     clonedTeamTemplate.querySelector('.add-team').addEventListener('click',  displayAddTeamForm);
     clonedTeamTemplate.querySelector('.team-name').textContent = teamData.name;
@@ -31,6 +30,12 @@ export async function insertTeamsInHTML(teamData)
 
 
     commons.teamButtonContainer.append(addTeamButton, updateTeamButton, deleteTeamButton, addPokemonToTeamButton);
+
+    if (teamData === '')
+    {
+        commons.displayActionsOnElements('display', ['.add-team']);
+        commons.displayActionsOnElements('hide', ['.team-container']);
+    }
 
 };
 

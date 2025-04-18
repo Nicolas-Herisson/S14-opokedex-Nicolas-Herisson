@@ -42,7 +42,7 @@ async function handleTeamButton()
     teamButton.addEventListener('click', async (e) => {
 
         commons.purgeMainContainer();
-        commons.displayActionsOnElements('hide',['.pokemon-page.searchBar','.addPokemon-to-team.searchBar','.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team']);
+        commons.displayActionsOnElements('hide',['.pokemon-page.searchBar','.addPokemon-to-team.searchBar','.add-team', '.add-pokemon-toTeam', '.delete-team', '.update-team', ]);
         commons.setMainTitle("Equipes :");
 
         await commons.fetchAndInsert('teams');

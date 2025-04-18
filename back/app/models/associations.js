@@ -21,16 +21,16 @@ Team.belongsToMany(Pokemon, {
 
 Type.belongsToMany(Pokemon, {
     as: "pokemons",
-    through: 'pokemon_type',
-    foreignKey: 'type_id',
-    otherKey: 'pokemon_id'
+    through: "pokemon_type",
+    foreignKey: "type_id",
+    otherKey: "pokemon_id"
 });
-
-Pokemon.belongsToMany(Type, {
+  
+  Pokemon.belongsToMany(Type, {
     as: "types",
-    through: 'pokemon_type',
-    foreignKey: 'pokemon_id',
-    otherKey: 'type_id'
+    through: "pokemon_type",
+    foreignKey: "pokemon_id",
+    otherKey: "type_id"
 });
 
 Vote.belongsTo(Pokemon, {

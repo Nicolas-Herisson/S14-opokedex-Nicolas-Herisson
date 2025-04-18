@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 
+
 import { pokemonRouter } from "./app/routers/pokemonRouter.js";
 import { typeRouter } from "./app/routers/typeRouter.js";
 import { teamRouter } from "./app/routers/teamRouter.js";
@@ -17,6 +18,7 @@ app.use(cors());
 
 
 app.use(express.json()); 
+
 //app.use(express.urlencoded({ extended: true }));
 //app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
